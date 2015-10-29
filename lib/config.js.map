@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/config.js"],"names":[],"mappings":";;;;;;;qBAEe;AACb,mBAAiB,EAAE,YAAY;CAChC","file":"config.js","sourcesContent":["/*! React Starter Kit | MIT License | http://www.reactstarterkit.com/ */\n\nexport default {\n  googleAnalyticsId: 'UA-XXXXX-X',\n};\n"]}

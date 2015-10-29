@@ -37,7 +37,7 @@ class Link extends Component {
 
     event.preventDefault();
 
-    if (allowTransition) {
+    if (allowTransition) { 
       const link = event.currentTarget;
       Location.pushState(
         this.props && this.props.state || null,
