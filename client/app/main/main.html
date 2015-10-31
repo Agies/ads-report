@@ -8,35 +8,8 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-6">
-      <h3>UAT</h3>
-      <div class="row">
-        <p class="col-md-4 margin">
-          Functional Properties
-          <button class="btn btn-success">Up</button>
-          <button class="btn btn-danger">Down</button>
-        </p>
-        <p class="col-md-4">
-          Card Properties
-          <button class="btn btn-success">Up</button>
-        </p>
-        <p class="col-md-4">
-          Axes
-          <button class="btn btn-success">Up</button>
-        </p>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <h3>Prod</h3>
-      <div>
-        Functional Properties
-      </div>
-      <div>
-        Card Properties
-      </div>
-      <div>
-        Axes
-      </div>
+    <div class="col-sm-6" ng-repeat="environment in environments">
+      <services-check environment="environment"></services-check>
     </div>
   </div>
 </div>
