@@ -7,7 +7,7 @@
 
 {
 	"version": "0.1.0",
-	"command": "npm",
+	"command": "grunt",
 	"isShellCommand": true,
 	"tasks": [
 		{
