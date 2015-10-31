@@ -14,6 +14,7 @@ describe('GET /api/environments', function() {
       .end(function(err, res) {
         if (err) return done(err);
         res.body.should.be.instanceof(Array);
+        res.body.length.should.be.eql(2);       
         done();
       });
   });
