@@ -6,6 +6,7 @@ var Environment = require('../../api/environment/environment.model');
 var request = require('request-promise');
 var shouldContinue = true;
 exports.lastRun = null;
+exports.nextRun = null;
 exports.throttle = 10000;
 exports.run = function (cb) {
 	return new Promise(function (fulfill, reject) {
@@ -74,6 +75,8 @@ exports.stop = function () {
 
 function scan(cb, fulfill, reject) {
 	exports.lastRun = new Date();
+	//Add Throttle
+	//exports.nextRun = exports.lastRun;
 	console.log('Scanning at', exports.lastRun);
 	exports
 	.run(cb)

@@ -29,7 +29,9 @@ var socketio = require('socket.io')(server, {
   path: '/socket.io-client'
 });
 if (process.env.NODE_ENV != 'test') {
-	require('./components/tasks/serviceScan').scan(function (result) {
+	var service = require('./components/tasks/serviceScan');
+	service.throttle = 20000;
+	service.scan(function (result) {
 		console.log('scan result');
 		socketio.emit('scan', result);
 	});

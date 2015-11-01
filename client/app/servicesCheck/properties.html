@@ -1,3 +1,5 @@
 {{service.name}}
-<button ng-show="service.isUp" class="btn btn-success">Up</button>
-<button ng-hide="service.isUp" class="btn btn-danger">Down</button>
+<button ng-show="service.isUp === undefined" class="btn">Unknown</button>
+<button ng-show="service.isUp === true" class="btn btn-success">Up</button>
+<button ng-show="service.isUp === false" class="btn btn-danger">Down</button>
+{{service.lastCheck | date : 'medium'}}
