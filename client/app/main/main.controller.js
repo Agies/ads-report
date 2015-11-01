@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('adsReportApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $http, socket, environment) {
     $scope.environments = [];
     $http.get('/api/environments').success(function(environments) {
       $scope.environments = environments;
