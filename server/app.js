@@ -13,13 +13,13 @@ var config = require('./config/environment');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
-mongoose.connection.on('error', function(err) {
+mongoose.connection.on('error', function (err) {
 	console.error('MongoDB connection error: ' + err);
 	process.exit(-1);
-	}
-);
+}
+	);
 // Populate DB with sample data
-if(config.seedDB) { require('./config/seed'); }
+if (config.seedDB) { require('./config/seed'); }
 
 // Setup server
 var app = express();
@@ -28,6 +28,12 @@ var socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',
   path: '/socket.io-client'
 });
+if (process.env.NODE_ENV != 'test') {
+	require('./components/tasks/serviceScan').scan(function (result) {
+		console.log('scan result');
+		socketio.emit('scan', result);
+	});
+}
 require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
