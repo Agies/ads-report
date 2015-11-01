@@ -5,10 +5,12 @@ var Promise = require('promise');
 var Environment = require('../../api/environment/environment.model');
 var request = require('request-promise');
 var shouldContinue = true;
-exports.lastRun = null;
-exports.nextRun = null;
-exports.throttle = 10000;
-exports.run = function (cb) {
+var mod = {};
+mod.lastRun = null;
+mod.nextRun = null;
+mod.throttle = 10000;
+mod.cache = {};
+mod.run = function (cb) {
 	return new Promise(function (fulfill, reject) {
 		//GET Environments
 		var promises = [];
@@ -37,6 +39,7 @@ exports.run = function (cb) {
 									console.log("Scan Success:", url.url);
 									result.data = response.body;
 									result.success = true;
+									mod.cache[result.url] = result;
 									if (cb) {
 										cb(result);
 									}
@@ -45,6 +48,7 @@ exports.run = function (cb) {
 									console.log("Scan Failure:", url.url);
 									result.data = err;
 									result.success = false;
+									mod.cache[result.url] = result;
 									if (cb) {
 										cb(result);
 									}
@@ -62,34 +66,34 @@ exports.run = function (cb) {
 	});
 }
 
-exports.scan = function (cb) {
+mod.scan = function (cb) {
 	shouldContinue = true;
 	return new Promise(function (fulfill, reject) {
 		scan(cb, fulfill, reject);
 	});
 }
 
-exports.stop = function () {
+mod.stop = function () {
 	shouldContinue = false;
 }
 
 function scan(cb, fulfill, reject) {
-	exports.lastRun = new Date();
+	mod.lastRun = new Date();
 	//Add Throttle
-	//exports.nextRun = exports.lastRun;
-	console.log('Scanning at', exports.lastRun);
-	exports
+	//service.nextRun = service.lastRun;
+	console.log('Scanning at', mod.lastRun);
+	mod
 	.run(cb)
 	.then(function () {
 		var now = new Date();
-		var difference  = parseInt(now - exports.lastRun);
+		var difference  = parseInt(now - mod.lastRun);
 		console.log('Difference between last run and now', difference);
 		if (shouldContinue) {
-			if (difference >= exports.throttle) {
+			if (difference >= mod.throttle) {
 				console.log('No wait required scanning now');
 				scan(cb, fulfill, reject);
 			} else {
-				var wait = exports.throttle - difference;
+				var wait = mod.throttle - difference;
 				console.log('Waiting till next run:', wait);
 				setTimeout(function() {
 					scan(cb, fulfill, reject);
@@ -101,3 +105,5 @@ function scan(cb, fulfill, reject) {
 		}
 	});
 }
+
+module.exports = mod;

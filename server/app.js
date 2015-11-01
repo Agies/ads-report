@@ -10,6 +10,8 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
+var serviceScan = require('./components/tasks/serviceScan');
+var serviceScanSocket = require('./components/tasks/serviceScan.socket');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
@@ -29,11 +31,9 @@ var socketio = require('socket.io')(server, {
   path: '/socket.io-client'
 });
 if (process.env.NODE_ENV != 'test') {
-	var service = require('./components/tasks/serviceScan');
-	service.throttle = 20000;
-	service.scan(function (result) {
-		console.log('scan result');
-		socketio.emit('scan', result);
+	serviceScan.throttle = 20000;
+	serviceScan.scan(function (result) {
+		serviceScanSocket.send(socketio, result);
 	});
 }
 require('./config/socketio')(socketio);

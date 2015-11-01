@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../components/tasks/serviceScan.socket').register(socket);
   require('../api/environment/environment.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }

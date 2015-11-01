@@ -53,4 +53,13 @@ describe('ServiceScan Scan', function () {
       serviceScan.stop();
     }, 7000);
   });
+  it('should cache the previous run', function(done) {
+    serviceScan
+    .scan(null)
+    .then(function() {
+      Object.keys(serviceScan.cache).length.should.be.eql(8);
+      done();
+    });
+    serviceScan.stop();
+  });
 });
