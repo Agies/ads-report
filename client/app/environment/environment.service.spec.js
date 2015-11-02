@@ -4,6 +4,7 @@ describe('Service: environment', function () {
 
   // load the service's module
   beforeEach(module('adsReportApp'));
+  beforeEach(module('socketMock'));
 
   var $httpBackend;
   var environment;
@@ -17,6 +18,7 @@ describe('Service: environment', function () {
   }));
 
   it('should cache loaded results', function () {
+    environment.load();
     $httpBackend.flush();
     expect(environment.cache.length).toBe(2);
   });

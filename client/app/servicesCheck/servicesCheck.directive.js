@@ -7,6 +7,7 @@ angular.module('adsReportApp')
       restrict: 'EA',
       scope: {
         'environment': '=',
+        'show': '='
       },
       link: function (scope, element, attrs) {
       }
@@ -16,7 +17,9 @@ angular.module('adsReportApp')
       templateUrl: 'app/servicesCheck/properties.html',
       restrict: 'EA',
       scope: {
-        'service':'='
+        'environment': '=',
+        'service': '=',
+        'show': '='
       },
       link: function (scope, element, attrs) {
       }

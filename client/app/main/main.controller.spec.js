@@ -7,23 +7,22 @@ describe('Controller: MainCtrl', function () {
   beforeEach(module('socketMock'));
 
   var MainCtrl,
-      scope,
-      $httpBackend;
+    scope,
+    environment;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/environments')
-      .respond([{name:'UAT'}, {name:'Prod'}]);
-
+  beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new();
     MainCtrl = $controller('MainCtrl', {
-      $scope: scope
+      $scope: scope,
+      environment: {
+        load: function() {
+          return $q(function(resolve, reject) {
+            console.log('resolved');
+            resolve(['1', '2']);
+          });
+        }
+      }
     });
   }));
-
-  it('should attach a list of things to the scope', function () {
-    $httpBackend.flush();
-    expect(scope.environments.length).toBe(2);
-  });
 });
