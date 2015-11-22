@@ -5,23 +5,34 @@ angular.module('adsReportApp')
     var service = {};
     service.cache = null;
     service.load = load;
+    service.find = find;
 
     socket.socket.on('scan', function (item) {
-      service.cache.forEach(function (environment) {
-        if (environment.name !== item.environment) {
-          return;
-        }
-        environment.services.forEach(function (service) {
-          if (item.service !== service.name) {
-            return;
-          }
-          service.isUp = item.success;
-          service.lastCheck = new Date();
-        });
-      });
+      console.log(item);
+      var ser = find(item.environment, item.service);
+      if (ser == null) return;
+      ser.isUp = item.success;
+      ser.data = item.data;
+      ser.lastCheck = new Date();
     });
 
     return service;
+
+    function find(environmentName, serviceName) {
+      var result = null;
+      service.cache.forEach(function (env) {
+        if (env.name !== environmentName) {
+          return null;
+        }
+        env.services.forEach(function (ser) {
+          if (ser.name !== serviceName) {
+            return null;
+          }
+          result = ser;
+        });
+      });
+      return result;
+    }
 
     function load() {
       return $q(function (resolve, reject) {

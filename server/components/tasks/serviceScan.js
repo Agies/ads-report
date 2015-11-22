@@ -45,7 +45,7 @@ mod.run = function (cb) {
 									}
 								})
 								.catch(function (err) {
-									console.log("Scan Failure:", url.url);
+									console.log("Scan Failure:", url.url, err);
 									result.data = err;
 									result.success = false;
 									mod.cache[result.url] = result;
